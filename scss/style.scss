@@ -1,0 +1,515 @@
+$colors: (
+    bg: rgb(24, 25, 31),
+    logo: rgb(206, 206, 206),
+    border: #373737,
+    navtext: rgb(194, 192, 192),
+    text: rgb(230, 230, 230)
+);
+
+// A map of breakpoints.
+$breakpoints: (
+  xs: 576px,
+  sm: 768px,
+  md: 992px,
+  lg: 1200px,
+  xlg: 1500px
+);
+
+@function setcolor($key) {
+    @return map-get($colors, $key);
+}
+
+//Media Querys https://glennmccomb.com/articles/useful-sass-scss-media-query-mixins-for-bootstrap/
+// Respond above.
+@mixin respond-above($breakpoint) {
+
+    // If the breakpoint exists in the map.
+    @if map-has-key($breakpoints, $breakpoint) {
+  
+        // Get the breakpoint value.
+        $breakpoint-value: map-get($breakpoints, $breakpoint);
+  
+        // Write the media query.
+        @media (min-width: $breakpoint-value) {
+            @content;
+        }
+  
+    // If the breakpoint doesn't exist in the map.
+    } @else {
+  
+        // Log a warning.
+        @warn 'Invalid breakpoint: #{$breakpoint}.';
+    }
+}
+
+@mixin respond-below($breakpoint) {
+
+    // If the breakpoint exists in the map.
+    @if map-has-key($breakpoints, $breakpoint) {
+  
+        // Get the breakpoint value.
+        $breakpoint-value: map-get($breakpoints, $breakpoint);
+  
+        // Write the media query.
+        @media (max-width: ($breakpoint-value - 1)) {
+        @content;
+    }
+  
+    // If the breakpoint doesn't exist in the map.
+    } @else {
+  
+        // Log a warning.
+        @warn 'Invalid breakpoint: #{$breakpoint}.';
+    }
+}
+
+// @include respond-between(sm, md) {}
+@mixin respond-between($lower, $upper) {
+
+    // If both the lower and upper breakpoints exist in the map.
+    @if map-has-key($breakpoints, $lower) and map-has-key($breakpoints, $upper) {
+  
+        // Get the lower and upper breakpoints.
+        $lower-breakpoint: map-get($breakpoints, $lower);
+        $upper-breakpoint: map-get($breakpoints, $upper);
+  
+        // Write the media query.
+        @media (min-width: $lower-breakpoint) and (max-width: ($upper-breakpoint - 1)) {
+            @content;
+        }
+    
+    // If one or both of the breakpoints don't exist.
+    } @else {
+  
+        // If lower breakpoint is invalid.
+        @if (map-has-key($breakpoints, $lower) == false) {
+  
+            // Log a warning.
+            @warn 'Your lower breakpoint was invalid: #{$lower}.';
+        }
+  
+        // If upper breakpoint is invalid.
+        @if (map-has-key($breakpoints, $upper) == false) {
+  
+            // Log a warning.
+            @warn 'Your upper breakpoint was invalid: #{$upper}.';
+        }
+    }
+}
+  
+* {
+    box-sizing: border-box;
+    margin: 0%;
+    padding: 0%;
+    
+}
+
+body {
+    background: setcolor(bg);
+}
+
+.navbar {
+    z-index: 9999;
+    width: 100%;
+    display: flex;
+    //flex: 1;
+    position: fixed;
+    height: 100px;
+    background: setcolor(bg);
+    border-bottom: 1.4px solid setcolor(border);
+    justify-content: space-around;
+    box-shadow: 0px 7px 17px -10px lighten(setcolor(border), 3%);
+
+    .nav-container {
+        width: 80%;
+        height: 90px;
+        //flex: 1 1 0.6;
+        margin: 5px 0;
+        justify-content: space-between;
+        display: flex;
+
+        .logo {
+            align-self: center;  
+            font-size: 3.5em;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            color: setcolor(logo);
+            text-shadow: 0px -1px 1px darken(setcolor(logo), 5%);
+        }
+
+        @include respond-between(sm, md) {
+            .logo {
+                font-size: 2.75em;
+            }
+        }
+
+        @include respond-below(sm) {
+            .logo {
+                font-size: 2.5em;
+            }
+        }
+
+        ul {
+            list-style-type: none;
+            align-self: center;
+        
+            li {
+                text-transform: uppercase;
+                font-size: 1.5em;
+                display: inline-block;
+                padding: 0.5em 1em;
+                
+                justify-content: space-around;
+                letter-spacing: 1.25px;
+
+                :hover, :active {
+                    border-bottom: 2px solid lighten(setcolor(border), 50%);
+                    color: lighten(setcolor(navtext), 10%);
+                }
+    
+                a {
+                    color: setcolor(navtext);
+                    text-decoration: none;
+                }
+            }
+
+            @include respond-below(sm) {
+                li {
+                    font-size: 1.25em;
+                }
+            }
+        }
+    }
+
+    @include respond-below(md) {
+        .nav-container {
+            width: 100%;
+        }
+    }
+}
+
+
+.container {
+    padding-top: 102px; //Height of Nav + Border
+    color: setcolor(text);
+    width: 100%;
+    min-height: calc(100vh - 50px);
+}
+
+.column {
+    display: flex;
+    flex-flow: column;
+    max-width: 100vw;
+}
+    
+h2 {
+    margin: 2em auto 1em auto;
+    font-size: 2em;
+    letter-spacing: 1.25px;
+}
+
+.searchbox {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 1em;
+
+    .searchbox_input {
+        outline: none;
+        background: none;
+        border: none;
+        border-bottom: 1px solid setcolor(border);
+        color: setcolor(text);
+        font-size: 1.5em;
+        flex: 0 1 0;
+        text-align: center;
+    }
+
+    input[type='text']:hover{
+        border-bottom: 1.5px solid setcolor(border); 
+    }
+
+    .countryflag {
+        position: absolute;
+        align-self: center;
+        border-radius: 80%;
+    }
+
+    .search_btn {
+        align-self: center;
+        padding-left: 0.3%;
+        font-size: 1.2em;
+        color: setcolor(text);
+
+        :hover {
+            color: darken(setcolor(text), 20%);
+        }
+    }
+}
+
+.error_msg {
+    color: lighten(red, 10%);
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 1em;
+}
+
+.coordinates {
+    font-size: 1.5em;
+
+    ul {
+        margin: 0 auto;
+        list-style-type: none;
+        text-align: center;
+        margin: 0 0 0 -20px;
+        li {
+            margin-bottom: 1.5em;
+            padding: 0 1em;
+            display: inline-block;
+        }
+    }
+}
+
+.weather {
+    //display: flex;
+    //justify-content: space-evenly;
+    margin: 0 auto;
+    padding-bottom: 2em;
+    border: 1.5px solid setcolor(border);
+    border-radius: 10px;
+    width: 80%;
+
+    .content_heading {
+        margin-top: 1em;
+        font-size: 2.5em;
+        color: lighten(setcolor(text), 10%);
+        text-align: center;
+        letter-spacing: 0.2em;
+        font-weight: 300;
+        text-transform: uppercase;
+    }
+
+    .content_subheading {
+        margin-top: 0.5em;
+        font-size: 1.5em;
+        color: lighten(setcolor(text), 5%);
+        text-align: center;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+    }
+
+    @include respond-between(md, lg) {
+        .content_subheading{
+            font-size: 1.2em;
+        }
+    }
+
+    @include respond-below(md) {
+        .content_subheading{
+            font-size: 1em;
+        }
+    }
+
+    @include respond-below(sm) {
+        .content_subheading{
+            font-size: 2em;
+        }
+    }
+
+    @include respond-below(xs) {
+        .content_subheading{
+            font-size: 1.5em;
+        }
+    }
+
+    .text {
+        font-size: 1.2em;
+        color: setcolor(text);
+        list-style-type: none;
+        text-align: center;
+        text-transform: capitalize;
+        padding: 1em 0;
+
+        li {
+            padding: 0.25em 0;
+            display: block; 
+        }
+    }
+
+    .cards {
+        display: flex;
+        justify-content: space-evenly;
+        align-self: center;
+
+        .border {
+            margin: 1em auto;
+            padding-bottom: 1em;
+            border: 1.5px solid setcolor(border);
+            border-radius: 10px;
+        }
+
+        .general {
+            width: calc(80% / 3);
+        }
+
+        @include respond-below(sm) {
+            .general {
+                width: 70%;
+            }
+        }
+
+        @include respond-below(sm) {
+            .temperature {
+                width: 70%;
+            }
+        }
+
+        .wind {
+            width: calc(80% / 3);
+
+            li {
+                padding: 1em 0;
+            }
+        }
+
+        @include respond-below(sm) {
+            .wind {
+                width: 70%;
+            }
+        }
+    
+        .temperature {
+            width: calc(80% / 3);
+            display: flex;
+            flex-flow: column;
+            justify-content: center;
+            align-items: center;
+
+            .btns {
+                display: inline-block;
+                
+                .temp_btn {
+                    outline: none;
+                    color: setcolor(text);
+                    width: 3em;
+                    text-align: center;
+                    padding-right: 0.3em;
+                    background: none;
+                    border: 1px solid lighten(setcolor(border), 10%);
+                }
+
+                .active, .btns:hover {
+                    background-color: rgb(61, 61, 61);     
+                }
+            }
+
+            //input[type='button'] {
+                
+            //}
+
+            li {
+                padding: 0.5em 0;
+            }
+        }
+
+        @include respond-below(sm) {
+            .temperature {
+                width: 70%;
+            }
+        }
+    }
+
+    @include respond-below(sm) {
+        .cards {
+            display: flex;
+            flex-flow: column;
+            justify-content: center;
+            width: 100%;
+        }
+    }
+    
+    .date_time {
+        justify-content: center;
+    }
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: darken(teal, 10%);
+    height: 50px;
+    margin-top: 50px;
+
+    p {
+        font-size: 1.5em;
+        color: darken(setcolor(text), 10%);
+    }
+}
+
+
+//Contact_Website
+.icon_container {
+    padding-top: 102px; //Height of Nav + Border
+    color: setcolor(text);
+    width: 100%;
+    min-height: calc(100vh);
+    display: flex;
+    margin: 0 auto;
+    
+    justify-content: center;
+    align-self: center;
+
+    .icons {
+        display: flex;
+        width: 90%;
+        justify-content: space-evenly;
+        align-self: center;
+        padding: 0 2em;
+        
+        a {
+            text-decoration: none;
+    
+            .icon {
+                font-size: 15em;
+                color: setcolor(text);
+            }
+
+            @include respond-between(md, lg) {
+                .icon {
+                    font-size: 12em;
+                }
+            }
+
+            @include respond-below(md) {
+                .icon {
+                    font-size: 10em;
+                }
+            }
+
+            @include respond-below(sm) {
+                .icon {
+                    font-size: 6em;
+                }
+            }
+
+            @include respond-below(xs) {
+                .icon {
+                    font-size: 5em;
+                    padding: 0;
+                }
+            }
+    
+            .fa-github:hover {
+                color: teal;
+            }
+    
+            .fa-codepen:hover {
+                color: teal;
+            }
+    
+            .fa-facebook:hover {
+                color: teal;
+            }
+        }
+    }
+}
