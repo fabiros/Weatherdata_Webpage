@@ -141,13 +141,11 @@ function calcTemperatur(response) { //@param: Weatherdata from OpenWeatherMap AP
                 temp_min = parseFloat(temp_min_array[0] + '.' + temp_min_array[1])
                 temp_max = parseFloat(temp_max_array[0] + '.' + temp_max_array[1])
 
-                console.log("TEMMMMMPPPP: " + temp_cur)
                 //Calculate Celisis
                 //(73,4 °F − 32) × 5/9
                 temp_cur = parseFloat((temp_cur - 32) / 1.8).toFixed(2) + '°C'
                 temp_min = parseFloat((temp_min - 32) / 1.8).toFixed(2) + '°C'
                 temp_max =  parseFloat((temp_max - 32) / 1.8).toFixed(2) + '°C'
-                console.log("//////" + temp_cur + "////////////")
             }
         } else {
             if(!btn3.hasClass("active")) { //Celsius was active => Calculate Celsius to Fahrenheit
@@ -169,17 +167,11 @@ function calcTemperatur(response) { //@param: Weatherdata from OpenWeatherMap AP
                 temp_min = parseFloat((temp_min * 1.8) + 32).toFixed(2) + '°F'
                 temp_max = parseFloat(temp_max * 1.8 + 32).toFixed(2) + '°F'
 
-                console.log("//////" + temp_cur)
+                
             }
         }
-
-        console.log($("#temp_cur").text())
-        //Remove everything after Space
-        /* $("#temp_cur").text($("#temp_cur").text().split(" ")[0])  / //replace(/\d\./g,' '  //Replace Temperature Values
-        $("#temp_min").text($("#temp_min").text().split(" ")[0]) 
-        $("#temp_max").text($("#temp_max").text().split(" ")[0])  */
-
-        $(".temp_class").remove() //Remove all Temperatures
+        //Remove all Temperatures
+        $(".temp_class").remove() 
 
         //Append temperatures new
         $(".temperature > .text").append(`<li class="temp_class" id="temp_cur"><b>Current: </b>${temp_cur}</li>
@@ -194,14 +186,6 @@ function calcTemperatur(response) { //@param: Weatherdata from OpenWeatherMap AP
         </ul>`
 }
 
-
-
-
-
-
-
-
-
 function clearSearchResult() { //Clear everything appended
     $(".text").remove()
     $(".countryflag").remove()
@@ -213,5 +197,4 @@ function checkInput(value) { //Count string and remove Img of country
     $(".text").remove()
     $("#countryflag").remove()
     input = value
-    //console.log(input)
 }
