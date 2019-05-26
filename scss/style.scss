@@ -255,6 +255,7 @@ h2 {
 
 .coordinates {
     font-size: 1.5em;
+    animation: fadeIn 1s linear forwards;
 
     ul {
         margin: 0 auto;
@@ -270,8 +271,6 @@ h2 {
 }
 
 .weather {
-    //display: flex;
-    //justify-content: space-evenly;
     margin: 0 auto;
     padding-bottom: 2em;
     border: 1.5px solid setcolor(border);
@@ -349,6 +348,7 @@ h2 {
 
         .general {
             width: calc(80% / 3);
+            animation: fadeInTop 0.5s linear forwards;
         }
 
         @include respond-below(sm) {
@@ -365,6 +365,7 @@ h2 {
 
         .wind {
             width: calc(80% / 3);
+            animation: fadeInTop 0.5s linear forwards;
 
             li {
                 padding: 1em 0;
@@ -383,6 +384,7 @@ h2 {
             flex-flow: column;
             justify-content: center;
             align-items: center;
+            animation: fadeInTop 0.5s linear forwards;
 
             .btns {
                 display: inline-block;
@@ -401,10 +403,6 @@ h2 {
                     background-color: rgb(61, 61, 61);     
                 }
             }
-
-            //input[type='button'] {
-                
-            //}
 
             li {
                 padding: 0.5em 0;
@@ -513,3 +511,20 @@ footer {
         }
     }
 }
+
+//Animations
+@keyframes fadeInTop{
+    from {
+        transform: translate3d(0, -20%, 0);
+        opacity: 0;
+    } to {
+        transform: translate3d(0, 0, 0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+

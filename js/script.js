@@ -120,17 +120,28 @@ function calcTemperatur(response) { //@param: Weatherdata from OpenWeatherMap AP
     let temp_min_array = ""
     let temp_max_array = ""
 
-    //Btn2 (Celsius) is active by default => Calculate Kelvin to Celsius
-    temp_cur = parseFloat((temp_cur - 273.15).toFixed(2)) + '°C'
-    temp_min = parseFloat((temp_min - 273.15).toFixed(2)) + '°C'
-    temp_max = parseFloat((temp_max - 273.15).toFixed(2)) + '°C'
+    //Calculate Celsius as default
+    temp_cur = parseFloat((temp_cur - 273.15).toFixed(2))
+    temp_min = parseFloat((temp_min - 273.15).toFixed(2))
+    temp_max = parseFloat((temp_max - 273.15).toFixed(2))
 
-    $('.temp_btn').on('click', function() {
+    if(btn2.hasClass("active")) { //Add Celsius string
+        temp_cur = temp_cur + '°C' 
+        temp_min = temp_min + '°C'
+        temp_max = temp_max + '°C'
+    } else { //Calc Fahrenheit and add Fahrenheit String
+        temp_cur = parseFloat((temp_cur * 1.8) + 32).toFixed(2) + '°F'
+        temp_min = parseFloat((temp_min * 1.8) + 32).toFixed(2) + '°F'
+        temp_max = parseFloat(temp_max * 1.8 + 32).toFixed(2) + '°F'
+    }
+
+    $('.temp_btn').unbind('click').bind('click', function() {
         if($(this).attr('id') == 'btn2') {
             if(!btn2.hasClass("active")) { //Fahrenheit was active => Calculate Fahrenheit to Celsius
-                 btn2.addClass("active")
-                 btn3.removeClass("active")
-               
+                btn3.removeClass("active")
+                btn2.addClass("active")
+                
+                
                 //Get only Numbers of String
                 temp_cur_array = $("#temp_cur").text().match(/(\d+)/g)
                 temp_min_array = $("#temp_min").text().match(/(\d+)/g)
@@ -141,16 +152,17 @@ function calcTemperatur(response) { //@param: Weatherdata from OpenWeatherMap AP
                 temp_min = parseFloat(temp_min_array[0] + '.' + temp_min_array[1])
                 temp_max = parseFloat(temp_max_array[0] + '.' + temp_max_array[1])
 
-                //Calculate Celisis
-                //(73,4 °F − 32) × 5/9
+                //Calculate Celsius
+                //Example: (73,4°F − 32) × 5/9
                 temp_cur = parseFloat((temp_cur - 32) / 1.8).toFixed(2) + '°C'
                 temp_min = parseFloat((temp_min - 32) / 1.8).toFixed(2) + '°C'
                 temp_max =  parseFloat((temp_max - 32) / 1.8).toFixed(2) + '°C'
             }
         } else {
             if(!btn3.hasClass("active")) { //Celsius was active => Calculate Celsius to Fahrenheit
-                btn3.addClass("active")
                 btn2.removeClass("active")
+                btn3.addClass("active")
+                
                 
                 //Get only Numbers of String
                 temp_cur_array = $("#temp_cur").text().match(/(\d+)/g)
@@ -161,13 +173,12 @@ function calcTemperatur(response) { //@param: Weatherdata from OpenWeatherMap AP
                 temp_cur = parseFloat(temp_cur_array[0] + '.' + temp_cur_array[1])
                 temp_min = parseFloat(temp_min_array[0] + '.' + temp_min_array[1])
                 temp_max = parseFloat(temp_max_array[0] + '.' + temp_max_array[1])
-
+                
                 //Calculate Fahrenheit
+                //Example: (10°C * 1.8) + 32)
                 temp_cur = parseFloat((temp_cur * 1.8) + 32).toFixed(2) + '°F'
                 temp_min = parseFloat((temp_min * 1.8) + 32).toFixed(2) + '°F'
                 temp_max = parseFloat(temp_max * 1.8 + 32).toFixed(2) + '°F'
-
-                
             }
         }
         //Remove all Temperatures
