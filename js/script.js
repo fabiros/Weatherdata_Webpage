@@ -41,7 +41,7 @@ async function weatherdata(city) {
         </ul>`).show()
     general.append(`<ul class="text">
         <li class="weather_condition">${response.weather[0].description}</li>
-        <li class="weather_icon"><img src="http://openweathermap.org/img/w/${response.weather[0].icon}.png" alt="Current Weather"</li>
+        <li class="weather_icon"><img src="https://openweathermap.org/img/w/${response.weather[0].icon}.png" alt="Current Weather"</li>
         <li><b>humidity: </b>${response.main.humidity}%</li>
         </ul>`)
     wind.append(`<ul class="text">
@@ -60,7 +60,7 @@ async function weatherdata(city) {
 function makeWeatherRequest(city) { //API Call
     return new Promise((resolve, reject) => {
         console.log("Making Request to openweathermap API")
-        $.getJSON(`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${owmapikey}`, (data => resolve(data))) //API call
+        $.getJSON(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${owmapikey}`, (data => resolve(data))) //API call
         .fail(err => { //Error
             (err_msg.text('Enter valid City!')).show() //Show it on UI
             reject(new Error(`Enter valid City! ${err}`))
@@ -74,7 +74,7 @@ function makeWeatherRequest(city) { //API Call
 function makeDateTimeRequest(city, lat, lon) {
     return new Promise((resolve, reject) => {
         console.log("Making Request to timezonedb API")
-        $.getJSON(`http://api.timezonedb.com/v2.1/get-time-zone?key=${timezonedbapikey}&format=json&by=position&lat=${lat}&lng=${lon}`, (data => resolve(data))) //API call
+        $.getJSON(`https://api.timezonedb.com/v2.1/get-time-zone?key=${timezonedbapikey}&format=json&by=position&lat=${lat}&lng=${lon}`, (data => resolve(data))) //API call
         .fail(err => { //Error
             date_time.append(`<p class="text">Couldn't get access to Date and Time!</p>`)
             reject(new Error(`Couldn't find Date and Time for ${city}! ${err}`))
